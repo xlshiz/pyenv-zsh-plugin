@@ -1,14 +1,17 @@
 # This plugin loads pyenv into the current shell and provides prompt info via
 # the 'pyenv_prompt_info' function. Also loads pyenv-virtualenv if available.
 
-FOUND_PYENV=$+commands[pyenv]
+FOUND_PYENV=0
 
 if [[ $FOUND_PYENV -ne 1 ]]; then
-    pyenvdirs=("$HOME/.pyenv" "/usr/local/pyenv" "/opt/pyenv" "$HOME/.pyenv/plugins/pyenv-virtualenv")
+    pyenvdirs=("$HOME/.pyenv" "/usr/local/pyenv" "/opt/pyenv")
     for dir in $pyenvdirs; do
         if [[ -d $dir/bin ]]; then
             export PATH="$PATH:$dir/bin"
             FOUND_PYENV=1
+	    if [[ -d $dir/plugins/pyenv-virtualenv/bin ]]; then
+		    export PATH="$PATH:$dir/plugins/pyenv-virtualenv/bin"
+	    fi
             break
         fi
     done
